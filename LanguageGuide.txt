@@ -1,0 +1,24 @@
+WeatherLang Language Guide
+==========================
+temp → declare an integer variable
+wind -> declare an float variable
+
+arithemtic operators:
+storm → x y add operation
+blizzard → x y subtraction operation
+typhoon → x y multiplication operation
+drought x y divide operation
+
+comparison operators:
+warmer x y greater then op x > y
+cooler x y less then op x < y
+climate x y equal to op x == y
+
+input:
+measure x → read an int value from user into x
+gauge → read a float
+
+forecast → output/print
+
+freeze → store to memory
+thaw → load from memory
