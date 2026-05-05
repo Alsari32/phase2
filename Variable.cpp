@@ -20,3 +20,6 @@ int Variable::getMemIndex()
 {
 	return memIndex;
 }
+std::string Variable::getType() {
+    return type;
+}

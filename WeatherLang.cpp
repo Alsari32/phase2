@@ -1,27 +1,29 @@
 #include "WeatherLang.h"
 
 
-WeatherLang::WeatherLang(Memory *mem,Cpu *c,outPut *out)
+WeatherLang::WeatherLang(Cpu *c,outPut *out)
 {
-	memory = mem;// memory now points to main's mem object
+	
 	cpu = c;	// cpu now points to main's cpu object
 	output = out;// output now points to main's out object
 	
 }
 
 
-void WeatherLang::temp(std::string name, int value)
+void WeatherLang::temp(std::string name, int value) 
 {
-	tempVar* v = new tempVar(name);
-	variables.push_back(v);
-	memory->store(v->getMemIndex(), std::to_string(value));//sends the index and converts the value into string
+    tempVar* v = new tempVar(name);
+    variables.push_back(v);
+    cpu->setAccumulator(std::to_string(value));
+    cpu->store(v->getMemIndex());
 }
 
-void WeatherLang::wind(std::string name, float value)
+void WeatherLang::wind(std::string name, float value) 
 {
-	WindVar* v = new WindVar(name);
-	variables.push_back(v);
-	memory->store(v->getMemIndex(), std::to_string(value));//sends the index and converts the value into string
+    WindVar* v = new WindVar(name);
+    variables.push_back(v);
+    cpu->setAccumulator(std::to_string(value));
+    cpu->store(v->getMemIndex());
 }
 
 int WeatherLang::findVar(std::string name) {//loops through the vector to find the var 
@@ -32,25 +34,23 @@ int WeatherLang::findVar(std::string name) {//loops through the vector to find t
     return -1;  // not found
 }
 
-void WeatherLang::storm(std::string dest, std::string src)
-{
-	int di = findVar(dest);//di is the position of dest in the vector
-	int si = findVar(src);
-	
-	std::string destValue = memory->load(variables[di]->getMemIndex());  // memory->load gives us the value
-    std::string srcValue  = memory->load(variables[si]->getMemIndex());
-
-	cpu->add(destValue,srcValue);//adds two var
-	std::string result = cpu->Store();  
-	memory->store(variables[di]->getMemIndex(), result);// send result back to memory
+void WeatherLang::storm(std::string dest, std::string src) {
+    int di = findVar(dest);
+    int si = findVar(src);
+    if (variables[di]->getType() == "float") {
+        cpu->addFloat(variables[di]->getMemIndex(), variables[si]->getMemIndex());
+    } else {
+        cpu->add(variables[di]->getMemIndex(), variables[si]->getMemIndex());
+    }
+    cpu->store(variables[di]->getMemIndex());
 }
 
 
-void WeatherLang::forecast(std::string name)
+void WeatherLang::forecast(std::string name) 
 {
-	int var = findVar(name);
-	std::string value = memory->load(variables[var]->getMemIndex());
-	output ->print(name,value);
+    int var = findVar(name);
+    cpu->load(variables[var]->getMemIndex());
+    output->print(name, cpu->getAccumulator());
 }
 
 void WeatherLang::run(std::string line) {

@@ -1,64 +1,105 @@
 #include "Cpu.h"
 
-
-Cpu::Cpu() {
+Cpu::Cpu(Memory* mem) {
+    memory = mem;
     accumulator = "0";
 }
-//================= Loading function loads a value from memory into a register/Accumulator
-void Cpu::load(std::string value) {
+
+void Cpu::load(int index) {
+    accumulator = memory->load(index);
+}
+
+void Cpu::store(int index) {
+    memory->store(index, accumulator);
+}
+
+std::string Cpu::getAccumulator() {
+    return accumulator;
+}
+
+void Cpu::setAccumulator(std::string value) {
     accumulator = value;
 }
 
-//=====================Stores value from a register/accumulator into memory
-std::string Cpu::Store()
+std::string Cpu::add(int indexA, int indexB) {
+    int a = std::stoi(memory->load(indexA));
+    int b = std::stoi(memory->load(indexB));
+    accumulator = std::to_string(a + b);
+    return accumulator;
+}
+
+std::string Cpu::addFloat(int indexA, int indexB)
 {
-	return accumulator;
-}
-
-
-//=======================add two values and stores the result into register/accumulator
-std::string Cpu::add(std::string a, std::string b) {
-    int result = std::stoi(a) + std::stoi(b);
-    accumulator = std::to_string(result);
+    float a = std::stof(memory->load(indexA));
+    float b = std::stof(memory->load(indexB));
+    accumulator = std::to_string(a + b);
     return accumulator;
-    
 }
 
-std::string Cpu::subtract(std::string a, std::string b) {
-    int result = std::stoi(a) - std::stoi(b);
-    accumulator = std::to_string(result);
+std::string Cpu::subtract(int indexA, int indexB) {
+    int a = std::stoi(memory->load(indexA));
+    int b = std::stoi(memory->load(indexB));
+    accumulator = std::to_string(a - b);
     return accumulator;
-    
 }
 
-std::string Cpu::multiply(std::string a, std::string b) {
-    int result = std::stoi(a) * std::stoi(b);
-    accumulator = std::to_string(result);
-    return accumulator;
-    
-}
-
-std::string Cpu::divide(std::string a, std::string b) {
-    int result = std::stoi(a) / std::stoi(b);
-    accumulator = std::to_string(result);
-    return accumulator;
-    
-}
-
-bool Cpu::compare(std::string a, std::string b, std::string op)
+std::string Cpu::subtractFloat(int indexA, int indexB)
 {
-	int x = std::stoi(a);
-    int y = std::stoi(b);
-    if (op == ">")  return x > y;
-    if (op == "<")  return x < y;
-    if (op == "==") return x == y;
+    float a = std::stof(memory->load(indexA));
+    float b = std::stof(memory->load(indexB));
+    accumulator = std::to_string(a - b);
+    return accumulator;
+}
+
+std::string Cpu::multiply(int indexA, int indexB) {
+    int a = std::stoi(memory->load(indexA));
+    int b = std::stoi(memory->load(indexB));
+    accumulator = std::to_string(a * b);
+    return accumulator;
+}
+
+std::string Cpu::multiplyFloat(int indexA, int indexB)
+{
+    float a = std::stof(memory->load(indexA));
+    float b = std::stof(memory->load(indexB));
+    accumulator = std::to_string(a * b);
+    return accumulator;
+}
+
+
+
+std::string Cpu::divide(int indexA, int indexB) {
+    int a = std::stoi(memory->load(indexA));
+    int b = std::stoi(memory->load(indexB));
+    accumulator = std::to_string(a / b);
+    return accumulator;
+}
+
+std::string Cpu::divideFloat(int indexA, int indexB)
+{
+    float a = std::stof(memory->load(indexA));
+    float b = std::stof(memory->load(indexB));
+    accumulator = std::to_string(a / b);
+    return accumulator;
+}
+
+
+
+bool Cpu::compare(int indexA, int indexB, std::string op) {
+    int a = std::stoi(memory->load(indexA));
+    int b = std::stoi(memory->load(indexB));
+    if (op == ">")  return a > b;
+    if (op == "<")  return a < b;
+    if (op == "==") return a == b;
     return false;
 }
 
-
-
-
-
-
-
-
+bool Cpu::compareFloat(int indexA, int indexB, std::string op) 
+{
+    float a = std::stof(memory->load(indexA));
+    float b = std::stof(memory->load(indexB));
+    if (op == ">")  return a > b;
+    if (op == "<")  return a < b;
+    if (op == "==") return a == b;
+    return false;
+}

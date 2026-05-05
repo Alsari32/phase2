@@ -18,13 +18,12 @@ class WeatherLang
 {
 	private:
 		Cpu *cpu;
-		Memory *memory;
 		outPut *output;
 		inPut *input;
 		std::vector<Variable*> variables;  // holds BOTH tempVar and WindVar
 		int findVar(std::string name);//find variable box and get the index  to output
 	public:
-		WeatherLang(Memory* memory, Cpu* cpu, outPut* output);
+		WeatherLang(Cpu* cpu, outPut* output);
 		
 		// WeatherLang commands
 		void temp(std::string name, int value);

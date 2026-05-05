@@ -1,22 +1,35 @@
 #ifndef CPU_H
 #define CPU_H
+
 #include <string>
-//lang is the middle man between the cpu and memory
-class Cpu
-{
-	private:
-    std::string accumulator; 
+#include "Memory.h"
 
-	public:
-		Cpu();
-	    void load(std::string value);  
-	    std::string Store();//give memory the accumaltor
-	    std::string add(std::string a, std::string b); 
-	    std::string subtract(std::string a, std::string b); 
-	    std::string multiply(std::string a, std::string b); 
-		std::string divide(std::string a, std::string b);
-		bool compare(std::string a, std::string b, std::string op);
-};		 
+class Cpu {
+private:
+    std::string accumulator;
+    Memory* memory;  // CPU now holds pointer to Memory
 
-		
+public:
+    Cpu(Memory* mem);
+    void load(int index);           // loads from memory[index] into accumulator
+    void store(int index);          // stores accumulator into memory[index]
+    std::string getAccumulator();   // returns accumulator value
+    void setAccumulator(std::string value); // sets accumulator directly
+
+    std::string add(int indexA, int indexB);
+    std::string addFloat(int indexA, int indexB);
+    
+    std::string subtract(int indexA, int indexB);
+    std::string subtractFloat(int indexA, int indexB);
+    
+    std::string multiply(int indexA, int indexB);
+    std::string multiplyFloat(int indexA, int indexB);
+    
+    std::string divide(int indexA, int indexB);
+    std::string divideFloat(int indexA, int indexB);
+    
+    bool compare(int indexA, int indexB, std::string op);
+    bool compareFloat(int indexA, int indexB,std::string op);
+};
+
 #endif

@@ -9,11 +9,12 @@ class Variable
 		std::string name;
 		int memIndex;
 		static int nextIndex;
+		std::string type;
 	public:
 		Variable(std::string name);
 		std::string getName();
 		int getMemIndex();
-	
+		std::string getType();
 };
 
 #endif
